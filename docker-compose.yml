@@ -13,3 +13,7 @@ services:
     candump:
         build: "./candump"      # use this directory as the build context for the service
         network_mode: host      # expose host network adaptors to the container directly
+
+    web-api:
+        build: "./web-api"
+        network_mode: host

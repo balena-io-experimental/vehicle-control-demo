@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Vehicle Control</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        socket.on('updated', function ({ state }) {
+            $("#log").append($("<li />").text(JSON.stringify(state)));
+
+            $("input[name='headlights_state']").filter("[value=" + state.headlights + "]").prop("checked", true);
+            $("input[name='indicators_state']").filter("[value=" + state.indicators + "]").prop("checked", true);
+            $("input[name='emergency_state']").filter("[value=" + state.emergency + "]").prop("checked", true);
+            $("input[name='siren_state']").filter("[value=" + state.siren + "]").prop("checked", true);
+        });
+
+        $(document).ready(function () {
+            $("input[name='headlights_state']").change(function ({ target }) {
+                const newValue = parseInt(target.value || "0");
+                socket.emit('headlights', newValue);
+                console.log(newValue);
+            });
+            $("input[name='indicators_state']").change(function ({ target }) {
+                const newValue = parseInt(target.value || "0");
+                socket.emit('indicators', newValue);
+                console.log(newValue);
+            });
+            $("input[name='emergency_state']").change(function ({ target }) {
+                const newValue = parseInt(target.value || "0");
+                socket.emit('emergency', newValue);
+                console.log(newValue);
+            });
+            $("input[name='siren_state']").change(function ({ target }) {
+                const newValue = parseInt(target.value || "0");
+                socket.emit('siren', newValue);
+                console.log(newValue);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Vehicle Control</h1>
+        <div class="row">
+            <div class="col-md-3">
+                <h3>Headlights</h3>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="headlights_state" id="headlights_state_off"
+                        value="0">
+                    <label class="form-check-label" for="headlights_state_off">Off</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="headlights_state" id="headlights_state_dipped"
+                        value="1">
+                    <label class="form-check-label" for="headlights_state_dipped">Dipped</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="headlights_state" id="headlights_state_main"
+                        value="2">
+                    <label class="form-check-label" for="headlights_state_main">Main</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h3>Indicators</h3>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="indicators_state" id="indicators_state_off"
+                        value="0">
+                    <label class="form-check-label" for="indicators_state_off">Off</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="indicators_state" id="indicators_state_left"
+                        value="1">
+                    <label class="form-check-label" for="indicators_state_dipped">Left</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="indicators_state" id="indicators_state_right"
+                        value="2">
+                    <label class="form-check-label" for="indicators_state_right">Right</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="indicators_state" id="indicators_state_hazard"
+                        value="3">
+                    <label class="form-check-label" for="indicators_state_hazard">Hazards</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h3>Emergency Lights</h3>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="emergency_state" id="emergency_state_off"
+                        value="0">
+                    <label class="form-check-label" for="emergency_state_off">Off</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="emergency_state" id="emergency_state_on"
+                        value="1">
+                    <label class="form-check-label" for="emergency_state_on">On</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h3>Siren</h3>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="siren_state" id="siren_state_off" value="0">
+                    <label class="form-check-label" for="siren_state_off">Off</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="siren_state" id="siren_state_on" value="1">
+                    <label class="form-check-label" for="siren_state_on">On</label>
+                </div>
+            </div>
+        </div>
+        <h2>Log</h2>
+        <ul id="log"></ul>
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

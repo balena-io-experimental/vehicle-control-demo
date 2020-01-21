@@ -13,6 +13,7 @@ This is the code for the Vehicle Control demo of developing products with Balena
 
 - Initialisation of the `can0` interface with configurable bitrate.
 - `candump` logging all frames to the `stdout` and onward to balenaCloud.
+- `web-ui` service to control the state of the vehicle.
 
 ## Questions?
 
