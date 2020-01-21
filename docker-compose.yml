@@ -1,0 +1,15 @@
+version: "2.0"
+
+services:
+    can-init:
+        build: "./can-init"     # use this directory as the build context for the service
+        network_mode: host      # expose host network adaptors to the container directly
+        cap_add:
+            - NET_ADMIN         # allow container to change network settings
+        restart: no
+        environment:
+            CAN0_BITRATE: 500000
+
+    candump:
+        build: "./candump"      # use this directory as the build context for the service
+        network_mode: host      # expose host network adaptors to the container directly
