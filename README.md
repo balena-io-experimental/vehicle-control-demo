@@ -12,7 +12,7 @@ This is the code for the Vehicle Control demo of developing products with Balena
 
 ## Configuring a balenaOS image
 
-- Use the (Balena-CLI tools)[https://www.balena.io/docs/reference/cli/]
+- Use the [Balena-CLI tools](https://www.balena.io/docs/reference/cli/)
 - The command `balena os configure ...` has all the options we need here:
   - Wifi Settings
   - Additional `system-connection` files, for cellular etc
